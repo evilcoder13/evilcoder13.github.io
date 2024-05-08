@@ -98,8 +98,6 @@
         }
 
         .chart {
-            width: 300px;
-            height: 300px;
             margin-bottom: 10px;
         }
         .fl, .fl label, .fl input { float:left; }
@@ -109,14 +107,31 @@
             width: 100%;
             font-weight: bold;
             border: double 3px #fff;
+            aspect-ratio: 1/1;
+            text-align: center;
+            vertical-align: middle;
         }
         table td {
             padding:5px;
             margin: 0;
             border:solid 1px #fff;
+            width:33%;
+            font-size:5vw;
         }
         .hidden {
             display: none;
+        }
+        .chart.chart1 td {
+            background-color:rgb(0,255,0,0.1);
+        }
+        .chart.chart1 td:empty {
+            background-color:#000;
+        }
+        .chart.chart2 td {
+            background-color:#000;
+        }
+        .chart.chart2 td:empty {
+            background-color:rgb(255,0,0,0.1);
         }
     </style>
 </head>
@@ -201,13 +216,13 @@
                 <p><strong>Công việc phù hợp: </strong><i>${itworkPath}</i> - ${workPathExplain}</p>
 
                 <h3>Biểu đồ ngày sinh</h3>
-                <div class="chart">${generateBirthChart(birthday)}</div>
+                <div class="chart chart1">${generateBirthChart(birthday)}</div>
                 <div>${generatePowerMeaning(birthday)}</div>
                 <h3>Biểu đồ tên</h3>
-                <div class="chart">${generateNameChart(name)}</div>
+                <div class="chart chart2">${generateNameChart(name)}</div>
 
                 <h3>Biểu đồ tổng hợp</h3>
-                <div class="chart">${generateMixChart(name,birthday)}</div>
+                <div class="chart chart2">${generateMixChart(name,birthday)}</div>
                 <div>${generateNameMeaning(name,birthday)}</div>
             `;
 
