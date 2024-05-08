@@ -134,6 +134,10 @@
             background-color:rgb(255,0,0,0.1);
         }
         dd { padding: 5px 0 5px 0;}
+        p.numer { font-size: 1.2em; }
+        p.numer strong { font-size: 0.8em; display: inline-block; width:150px; }
+        p.numer box:first-of-type { margin-left:10px;}
+        p.numer box { background-color: #f00; border: solid 1px #000; height:10px; width:10px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -208,11 +212,11 @@
             const resultHTML = `
                 <h2>Kết quả</h2>
 
-                <p>Chỉ số đường đời: ${lifePathNumber}</p>
-                <p>Chỉ số thái độ: ${attitudeNumber}</p>
-                <p>Chỉ số sứ mệnh: ${missionNumber}</p>
-                <p>Chỉ số linh hồn: ${soulNumber}</p>
-                <p>Chỉ số nhân cách: ${personalityNumber}</p>
+                <p class="numer"><strong>Chỉ số đường đời:</strong> ${lifePathNumber}${'<box></box>'.repeat(lifePathNumber)}</p>
+                <p class="numer"><strong>Chỉ số thái độ:</strong> ${attitudeNumber}${'<box></box>'.repeat(attitudeNumber)}</p>
+                <p class="numer"><strong>Chỉ số sứ mệnh:</strong> ${missionNumber}${'<box></box>'.repeat(missionNumber)}</p>
+                <p class="numer"><strong>Chỉ số linh hồn:</strong> ${soulNumber}${'<box></box>'.repeat(soulNumber)}</p>
+                <p class="numer"><strong>Chỉ số nhân cách:</strong> ${personalityNumber}${'<box></box>'.repeat(personalityNumber)}</p>
 
                 <p><strong>Công việc phù hợp: </strong><i>${itworkPath}</i> - ${workPathExplain}</p>
 
