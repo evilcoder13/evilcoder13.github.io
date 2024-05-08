@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aptech - Thần Số Học</title>
-    <script src="./jspdf.min.js"></script>
-    <script src="./arial-normal.js"></script>
+    <script src="./jspdf.min.js" async></script>
+    <script src="./arial-normal.js" async></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.0/jspdf.min.js"></script> -->
-    <script src="./html2canvas.min.js"></script>
+    <script src="./html2canvas.min.js" async></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,8 +16,8 @@
             background-color:#333;
             color:#fff;
             background-image: url(numerology-black.jpg);
+            text-align: justify;
         }
-
         body > div#mainpage, body > div#result {
             margin: 0;
             padding: 0;
@@ -133,6 +133,7 @@
         .chart.chart2 td:empty {
             background-color:rgb(255,0,0,0.1);
         }
+        dd { padding: 5px 0 5px 0;}
     </style>
 </head>
 <body>
