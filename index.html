@@ -137,7 +137,10 @@
         p.numer { font-size: 1.2em; }
         p.numer strong { font-size: 0.8em; display: inline-block; width:150px; }
         p.numer box:first-of-type { margin-left:10px;}
-        p.numer box { background-color: #f00; border: solid 1px #000; height:10px; width:10px; display: inline-block; }
+        p.numer box { background-color: #0f0; border: solid 1px #000; height:10px; width:10px; display: inline-block; }
+        red {color:red;}
+        .center {  text-align: center;}
+        .w100 {width:100%;}
     </style>
 </head>
 <body>
@@ -146,12 +149,15 @@
             <h1>Thần Số Học</h1>
             
             <form id="form">
-                <label for="name">Họ và tên:</label>
+                <label for="name">Họ và tên (<red>*</red>):</label>
                 <input type="text" id="name" required>
 
-                <label for="birthday">Ngày sinh:</label>
+                <label for="cname">Tên thường gọi (<red>*</red>):</label>
+                <input type="text" id="cname" required>
+
+                <label for="birthday">Ngày sinh(<red>*</red>):</label>
                 <input type="date" id="birthday" required>
-<!-- 
+
                 <label for="gender">Giới tính:</label>
                 <div class="fl cb">
                     <input type="radio" id="male" name="gender" value="male" checked>
@@ -159,7 +165,10 @@
 
                     <input type="radio" id="female" name="gender" value="female">
                     <label for="female">Nữ</label>
-                </div> -->
+                </div>
+
+                <label for="email">Ngày sinh:</label>
+                <input type="email" id="email">
 
                 <h1><button type="button" onclick="calculate()">Xem kết quả</button></h1>
             </form>
@@ -198,8 +207,10 @@
         }
         function calculate() {
             const name = document.getElementById('name').value;
+            const cname = document.getElementById('cname').value;
             const birthday = document.getElementById('birthday').value;
-            const gender = "female"; //document.querySelector('input[name="gender"]:checked').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const email = document.getElementById('email').value;
 
             // Calculate numerology numbers here
             const lifePathNumber = calculateLifePathNumber(name, birthday, gender);
@@ -208,26 +219,105 @@
             const soulNumber = calculateSoulNumber(name, birthday, gender);
             const personalityNumber = calculatePersonalityNumber(name, birthday, gender);
 
+            
+            const lifePathNumberExplain = ()=>{
+                return ["Lãnh đạo, độc lập, sáng tạo, tự tin.","Hợp tác, thấu hiểu, nhạy cảm, biết quan tâm.","Giao tiếp, sáng tạo, lạc quan, yêu đời.","Kỷ luật, cẩn thận, logic, có trách nhiệm.","Tự do, thích phiêu lưu, mạo hiểm, linh hoạt.","Yêu thương, hy sinh, trách nhiệm, biết quan tâm.","Phân tích, triết học, tâm linh, bí ẩn.","Quyền lực, tham vọng, lãnh đạo, có tầm nhìn.","Nhân ái, vị tha, có ảnh hưởng, yêu thương nhân loại."][lifePathNumber*1]
+            };
+            const lifePathNumberExplainDetail = ()=>{
+                return "";
+            }
+            const missionNumberExplainDetail = ()=>{
+                return "";
+            }
+            const soulNumberExplainDetail = ()=>{
+                return "";
+            }
+            const personalityNumberExplainDetail = ()=>{
+                return "";
+            }
+            const attitudeNumberNumberExplainDetail = ()=>{
+                return "";
+            }
+
             // Generate birth chart and name chart here
             const { workPathExplain, itworkPath } = calculateWorkPathExplain(lifePathNumber);
             const resultHTML = `
-                <h2>Kết quả</h2>
+                <h2>${cname} ơi, đây là kết quả của bạn:</h2>
 
-                <p class="numer"><strong>Chỉ số đường đời:</strong> ${lifePathNumber}${'<box></box>'.repeat(lifePathNumber)}</p>
-                <p class="numer"><strong>Chỉ số thái độ:</strong> ${attitudeNumber}${'<box></box>'.repeat(attitudeNumber)}</p>
-                <p class="numer"><strong>Chỉ số sứ mệnh:</strong> ${missionNumber}${'<box></box>'.repeat(missionNumber)}</p>
-                <p class="numer"><strong>Chỉ số linh hồn:</strong> ${soulNumber}${'<box></box>'.repeat(soulNumber)}</p>
-                <p class="numer"><strong>Chỉ số nhân cách:</strong> ${personalityNumber}${'<box></box>'.repeat(personalityNumber)}</p>
+                <p class="numer"><strong>Chỉ số đường đời:</strong> <red>${lifePathNumber}</red>${'<box></box>'.repeat(lifePathNumber)}</p>
+                <p class="numer"><strong>Chỉ số thái độ:</strong> <red>${attitudeNumber}</red>${'<box></box>'.repeat(attitudeNumber)}</p>
+                <p class="numer"><strong>Chỉ số sứ mệnh:</strong> <red>${missionNumber}</red>${'<box></box>'.repeat(missionNumber)}</p>
+                <p class="numer"><strong>Chỉ số linh hồn:</strong> <red>${soulNumber}</red>${'<box></box>'.repeat(soulNumber)}</p>
+                <p class="numer"><strong>Chỉ số nhân cách:</strong> <red>${personalityNumber}</red>${'<box></box>'.repeat(personalityNumber)}</p>
+                <p class="numer"><strong>Biểu đồ ngày sinh:</strong><a href="#bdaychart">Chi tiết</a></p>
+                <p class="numer"><strong>Biểu đồ tên:</strong><a href="#namechart">Chi tiết</a></p>
+                <p class="numer"><strong>Biểu đồ tổng hợp:</strong><a href="#mixchart">Chi tiết</a></p>
 
                 <p><strong>Công việc phù hợp: </strong><i>${itworkPath}</i> - ${workPathExplain}</p>
+                <h2 class="center w100">LUẬN GIẢI CHI TIẾT</h2>
+                <h3>1, Chỉ số đường đời</h3>
+                <p>Chỉ số Đường đời, hay còn gọi là Số Chủ đạo, là một trong những con số quan trọng nhất trong Thần số học. Nó được tính toán dựa trên ngày sinh của bạn và đại diện cho:</p>
+                <ul>
+                    <li><strong>Hướng đi chính, mục tiêu và sứ mệnh</strong> trong cuộc sống của bạn.</li>
+                    <li><strong>Bản chất cốt lõi</strong> của con người bạn, những phẩm chất và đặc điểm bẩm sinh mà bạn mang theo khi sinh ra.</li>
+                    <li><strong>Những bài học</strong> mà bạn cần học hỏi và trải nghiệm trong cuộc đời này để hoàn thành sứ mệnh của mình.</li>
+                    <li><strong>Những thách thức và cơ hội</strong> mà bạn có thể gặp phải trên hành trình phát triển bản thân.</li>
+                </ul>
+                <p>Để xác định Chỉ số Đường đời, bạn cần cộng tất cả các chữ số trong ngày sinh của mình lại với nhau.</p>
+                <p>${cname} thân mến, chỉ số đường đời của bạn là Số ${lifePathNumber}: ${lifePathNumberExplain()}</p>
+                <p>${lifePathNumberExplainDetail()}</p>
 
-                <h3>Biểu đồ ngày sinh</h3>
+                <h3>2, Chỉ số sứ mệnh</h3>
+                <p>Chỉ số sứ mệnh (tên thường gọi khác là Số vận mệnh) là một chỉ số rất quan trọng trong Thần số học, nó cho bạn biết về ý nghĩa, nhiệm vụ của bạn khi đến với thế giới này. Trong cuộc đời, mỗi chúng ta đều có một cái tên riêng. Và tên không chỉ là tên riêng của mỗi người mà theo Thần số học, tên của mỗi người còn ẩn chứa nhiều ý nghĩa khác nhau.</p>
+                <ul>
+                    <li><strong>Mục đích cao cả</strong> mà bạn cần hoàn thành trong kiếp sống này - lý do bạn có mặt trên Trái Đất.</li>
+                    <li><strong>Bài học cốt lõi</strong> mà bạn cần học hỏi và trải nghiệm để hoàn thành sứ mệnh - những thử thách và cơ hội giúp bạn trưởng thành.</li>
+                    <li><strong>Niềm đam mê tiềm ẩn</strong> bên trong bạn - nguồn động lực thôi thúc bạn hành động và cống hiến.</li>
+                    <li><strong>Phần đóng góp</strong> mà bạn mang đến cho thế giới - dấu ấn mà bạn muốn để lại cho cuộc sống.</li>
+                </ul>
+                <p>${cname} thân mến, chỉ số sứ mệnh của bạn là Số ${missionNumber}: </p>
+                <p>${missionNumberExplainDetail()}</p>
+
+                <h3>3, Chỉ số linh hồn</h3>
+                <p>Chỉ số Linh hồn, hay còn gọi là Số Nội tâm, là một con số quan trọng trong Thần số học, đại diện cho:</p>
+                <ul>
+                    <li><strong>Mục đích cao cả</strong> mà bạn cần hoàn thành trong kiếp sống này - lý do bạn có mặt trên Trái Đất.</li>
+                    <li><strong>Bài học cốt lõi</strong> mà bạn cần học hỏi và trải nghiệm để hoàn thành sứ mệnh - những thử thách và cơ hội giúp bạn trưởng thành.</li>
+                    <li><strong>Niềm đam mê tiềm ẩn</strong> bên trong bạn - nguồn động lực thôi thúc bạn hành động và cống hiến.</li>
+                    <li><strong>Phần đóng góp</strong> mà bạn mang đến cho thế giới - dấu ấn mà bạn muốn để lại cho cuộc sống.</li>
+                </ul>
+                <p>${cname} thân mến, chỉ số sứ mệnh của bạn là Số ${soulNumber}: </p>
+                <p>${soulNumberExplainDetail()}</p>
+
+                <h3>4, Chỉ số nhân cách</h3>
+                <p>Chỉ số Nhân cách, hay còn gọi là Số Biểu hiện, là một con số quan trọng trong Thần số học, thể hiện:</p>
+                <ul>
+                    <li><strong>Cách bạn thể hiện bản thân</strong> trong thế giới - ấn tượng đầu tiên bạn tạo ra cho người khác.</li>
+                    <li><strong>Mặt nạ xã hội</strong> mà bạn sử dụng để tương tác với mọi người.</li>
+                    <li><strong>Hình ảnh</strong> mà bạn muốn người khác nhìn nhận về bạn.</li>
+                    <li><strong>Năng lượng</strong> mà bạn tỏa ra trong các mối quan hệ.</li>
+                </ul>
+                <p>${cname} thân mến, chỉ số nhân cách của bạn là Số ${personalityNumber}: </p>
+                <p>${personalityNumberExplainDetail()}</p>
+
+                <h3>5, Chỉ số thái độ</h3>
+                <p>Chỉ số Thái độ, hay còn gọi là Số Nội tâm, là một con số quan trọng trong Thần số học, thể hiện cách bạn phản ứng, tiếp cận với những vấn đề, tình huống trong cuộc sống, đặc biệt là khi lần đầu tiên gặp phải.</p>
+                <ul>
+                    <li>Thể hiện cách bạn nhìn nhận và trải nghiệm thế giới xung quanh.</li>
+                    <li>Tiết lộ cách bạn phản ứng với những thử thách, khó khăn và những điều mới mẻ.</li>
+                    <li>Cho thấy cách bạn thể hiện cảm xúc và suy nghĩ của bản thân.</li>
+                    <li>Giúp bạn hiểu rõ hơn về cách bạn tương tác với mọi người và xây dựng các mối quan hệ.</li>
+                </ul>
+                <p>${cname} thân mến, chỉ số thái độ của bạn là Số ${attitudeNumber}: </p>
+                <p>${attitudeNumberNumberExplainDetail()}</p>
+
+                <h3 id="bdaychart">Biểu đồ ngày sinh</h3>
                 <div class="chart chart1">${generateBirthChart(birthday)}</div>
                 <div>${generatePowerMeaning(birthday)}</div>
-                <h3>Biểu đồ tên</h3>
+                <h3 id="namechart">Biểu đồ tên</h3>
                 <div class="chart chart2">${generateNameChart(name)}</div>
 
-                <h3>Biểu đồ tổng hợp</h3>
+                <h3 id="mixchart">Biểu đồ tổng hợp</h3>
                 <div class="chart chart2">${generateMixChart(name,birthday)}</div>
                 <div>${generateNameMeaning(name,birthday)}</div>
             `;
