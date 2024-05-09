@@ -32,7 +32,6 @@ function generateBirthChart(birthday) {
 function generatePowerMeaning(birthday) {
     let objNumber = countNumbers(birthday+'')
     let htmlData = "";
-    console.log(Object.keys(objNumber))
     for(var _num of Object.keys(objNumber))
         switch(_num*1) {
             case 1:
@@ -121,7 +120,7 @@ function generateNameMeaning(name,birthday) {
     <p>Tuy nhiên, khi xét về các con số trống thì bạn cần kết hợp được cả biểu đồ tên và biểu đồ ngày sinh thần số học của mình. Bởi vì có thể con số trống trong biểu đồ tên lại xuất hiện trong biểu đồ ngày sinh và ngược lại, nếu như vậy thì nó đã được bổ sung cho nhau.</p>
     `;
     for(var i = 1; i < 10; i++)
-        if(Object.keys(objNumber).indexOf(i)<=0)
+        if(Object.keys(objNumber).map(x=>x*1).indexOf(i)<0)
             switch(i) {
                 case 1:
                     htmlData += `<dl><h3>Trong biểu đồ của bạn trống số ${i}: </h3></dl>`;
