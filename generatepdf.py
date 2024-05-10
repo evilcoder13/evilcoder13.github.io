@@ -3,6 +3,8 @@ import os
 import io
 import time
 import json
+from Screenshot import Screenshot
+ob = Screenshot.Screenshot()
 from selenium import webdriver
 # import undetected_chromedriver as webdriver
 from selenium.webdriver.common.keys import Keys
@@ -113,8 +115,12 @@ def Login(name,cname,dob,sex,email):
     btnCalculate_elem.click()
     time.sleep(2)
     browser.save_screenshot(f"./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.png")
-    take_full_page_screenshot(browser,f'./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.pdf')
+    take_full_page_screenshot1(browser,f'{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}',f'./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.pdf')
     # browser.execute_script('window.print();')
+def take_full_page_screenshot1(driver, imgname, destination):
+    img_url = ob.full_screenshot(driver, save_path=r'.', image_name=f"./screenshot/full{imgname}.png", is_load_at_runtime=True, load_wait_time=3)
+    screenshot = Image.open(img_url)
+    screenshot.save(destination)
 def take_full_page_screenshot(driver, destination):
     """Takes a full-page screenshot of the current webpage and saves it"""
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")

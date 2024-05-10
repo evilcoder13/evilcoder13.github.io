@@ -188,7 +188,7 @@ function generateNameChart(name) {
     let objNumber = countNumbers(convertNameToNumberString(name))
     let htmlTalbe = `
         <table id="bchart">
-            <caption>Biểu đồ tên đang được phát triển</caption>
+            <caption>Biểu đồ tên</caption>
             <tr>
                 <td>${createCellContent(7,objNumber)}</td>
                 <td>${createCellContent(8,objNumber)}</td>
@@ -217,7 +217,7 @@ function generateMixChart(name,birthday) {
     
     let htmlTalbe = `
         <table id="bchart">
-            <caption>Biểu đồ tên đang được phát triển</caption>
+            <caption>Biểu đồ tên tổng hợp</caption>
             <tr>
                 <td>${createCellContent(7,objNumber)}</td>
                 <td>${createCellContent(8,objNumber)}</td>
