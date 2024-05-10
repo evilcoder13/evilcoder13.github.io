@@ -30,7 +30,7 @@ function reduceToSingleDigit(number,special) {
         return number;
     } else {
         const sum = number.toString().split('').map(Number).reduce((a, b) => a + b);
-        return reduceToSingleDigit(sum);
+        return reduceToSingleDigit(sum,special);
     }
 }
 

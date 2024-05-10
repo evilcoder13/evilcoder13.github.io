@@ -3,6 +3,7 @@ import os
 import io
 import time
 import json
+import csv
 from Screenshot import Screenshot
 ob = Screenshot.Screenshot()
 from selenium import webdriver
@@ -63,22 +64,6 @@ chrome_options.add_argument("--disable-dev-shm-usage"); # overcome limited resou
 chrome_options.add_argument("--window-size=1024x768") # Optional
 chrome_options.headless = True
 chrome_options.log_level = "TRACE"
-# print(1);
-#setting for printing
-# settings = {
-#     "appState": {
-#         "recentDestinations": [{
-#             "id": "Save as PDF",
-#             "origin": "local"
-#         }],
-#         "selectedDestinationId": "Save as PDF",
-#         "version": 2
-#     }  
-# }
-# prefs = {'printing.print_preview_sticky_settings': json.dumps(settings)}
-# chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_experimental_option('prefs', prefs)
-# chrome_options.add_argument('--kiosk-printing')
 
 # Initialize Chrome WebDriver with the provided path and options
 browser = webdriver.Chrome(driver_path,options=chrome_options)
@@ -114,7 +99,7 @@ def Login(name,cname,dob,sex,email):
     )
     btnCalculate_elem.click()
     time.sleep(2)
-    browser.save_screenshot(f"./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.png")
+    # browser.save_screenshot(f"./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.png")
     take_full_page_screenshot1(browser,f'{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}',f'./screenshot/{remove_non_alphanumeric(name)}{remove_non_alphanumeric(dob)}.pdf')
     # browser.execute_script('window.print();')
 def take_full_page_screenshot1(driver, imgname, destination):
@@ -136,19 +121,30 @@ def take_full_page_screenshot(driver, destination):
         y += part_image.size[1]
     screenshot.save(destination)
 
-browser.get(URL)
-time.sleep(3)
-Login('Dao Manh Thang', 'Thang', '10/02/1986', 'male', 'thang@mail.com')
-# if 'login' in browser.current_url:
-#     Login()
+# browser.get(URL)
 # time.sleep(3)
-# article_elem = WebDriverWait(browser, 60).until(
-#     EC.presence_of_element_located((By.TAG_NAME, "article"))
-#     #EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'))
-# )
-# print(len(article_elem.text))
-# ProcessArticle()
-time.sleep(1)
+# Login('Dao Manh Thang', 'Thang', '10/02/1986', 'male', 'thang@mail.com')
+# time.sleep(1)
+def process_csv(filename):
+  """
+  Loops through a CSV file and processes each row.
 
+  Args:
+      filename (str): The path to the CSV file.
+  """
+  with open(filename, 'r', newline='') as csvfile:
+    reader = csv.DictReader(csvfile,skipinitialspace=True)
+    i = 0
+    for row in reader:
+      print('Processing: ',row)
+      browser.get(URL)
+      time.sleep(1)
+      Login(*row.values())
+      time.sleep(1)
+
+# Replace with the path to your CSV file
+csv_file = "studentlist.csv"
+process_csv(csv_file)
+print('Done! Exiting...')
 # Close the browser
 browser.quit()

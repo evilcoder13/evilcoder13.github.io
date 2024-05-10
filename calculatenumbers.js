@@ -36,7 +36,7 @@ function calculateSoulNumber(name, birthday, gender) {
     let num = 0;
     for(var _name of name.split(' '))
         if(_name) num += convertNameToNumbers(_name,false,true);
-    return num;
+    return reduceToSingleDigit(num);
 }
 
 function calculateLifePathNumber(name, birthday, gender) {
