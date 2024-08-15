@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hỗ trợ thiền</title>
+    <style>
+        h1 { text-align: center; }
+        label { display:inline-block; width:150px; text-align: right;}
+        .hide { display:none; }
+        legend { font-weight: bold; font-size: 1.2em; }
+        #cauhinh > div { margin: 5px 0 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Phần mềm hỗ trợ đếm nhịp thở</h1>
+    <fieldset>
+        <legend><a href="#" onclick="document.getElementById('cauhinh').classList.toggle('hide');">Cài đặt</a></legend>
+        <div id="cauhinh" class="hide">
+            <div>
+                <label for="sogiayhitvao">Số giây hít vào</label>
+                <input type="number" name="sogiayhitvao" id="sogiayhitvao" value="7">
+            </div>
+            <div>
+                <label for="tansohitvao">Tần số âm thanh (Hz)</label>
+                <input type="number" name="tansohitvao" id="tansohitvao" value="417">
+            </div>
+            <div>
+                <label for="sogiaynintho">Số giây nín thở</label>
+                <input type="number" name="sogiaynintho" id="sogiaynintho" value="3">
+            </div>
+            <div>
+                <label for="tansonintho">Tần số âm thanh (Hz)</label>
+                <input type="number" name="tansonintho" id="tansonintho" value="174">
+            </div>
+            <div>
+                <label for="sogiaythora">Số giây thở ra</label>
+                <input type="number" name="sogiaythora" id="sogiaythora" value="5">
+            </div>
+            <div>
+                <label for="tansothora">Tần số âm thanh (Hz)</label>
+                <input type="number" name="tansothora" id="tansothora" value="369">
+            </div>
+            <div>
+                <label for="sogiayngungtho">Số giây ngừng thở</label>
+                <input type="number" name="sogiayngungtho" id="sogiayngungtho"value="2">
+            </div>
+            <div>
+                <label for="tansongungtho">Tần số âm thanh (Hz)</label>
+                <input type="number" name="tansongungtho" id="tansongungtho" value="285">
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><a href="#" onclick="document.getElementById('profile').classList.toggle('hide');">Cấu hình</a></legend>
+        <div id="profile" class="hide">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Chức năng</legend>
+        <div id="thuchien">
+            Số vòng thở: <span id="sovong">0</span>
+            <button id="batdau" onclick="BatDau()">Bắt đầu</button>
+            <button id="kethuc" onclick="tapthien=false;">Kết thúc</button>
+            <button id="save" onclick="SaveProfile()">Lưu cấu hình</button>
+        </div>
+    </fieldset>
+    <script type="text/javascript">
+        var tapthien = false;
+        var sovong = 0;
+        var savedProfile = [
+            {"name": "Hơi thở của sự sống", "sogiayhitvao":"7","sogiaythora":"5","sogiaynintho":"3",   "sogiayngungtho":"2","tansohitvao":"417","tansothora":"369","tansonintho":"174","tansongungtho":"285"},
+            {"name": "Hơi thở của cái chết", "sogiayhitvao":"8","sogiaythora":"5","sogiaynintho":"4",   "sogiayngungtho":"2","tansohitvao":"417","tansothora":"369","tansonintho":"174","tansongungtho":"285"}
+        ];
+        function getValue(id) {
+            return document.getElementById(id).value;
+        }
+        function setValue(id,value) {
+            document.getElementById(id).value = value;
+        }
+        function sleep(s) {
+            return new Promise(resolve => setTimeout(resolve, s*1000));
+        }
+        function playSound(freq,time,vol=0.1) {
+            if(!tapthien) return;
+            // one context per document
+            var context = new (window.AudioContext || window.webkitAudioContext)();
+            var osc = context.createOscillator(); // instantiate an oscillator
+            osc.type = 'sine'; // this is the default - also square, sawtooth, triangle
+            // We create a gain intermediary
+            var volume = context.createGain();
+            osc.connect(volume); // connect it to the destination
+            volume.connect(context.destination);
+            volume.gain.value = vol;
+            osc.frequency.value = freq; // Hz
+            osc.start(); // start the oscillator
+            osc.stop(context.currentTime + time); // stop 2 seconds after the current time
+        }
+        async function BatDau() {
+            //playSound(369,5);
+            var sogiayhitvao = getValue("sogiayhitvao");
+            var sogiaythora = getValue("sogiaythora");
+            var sogiaynintho = getValue("sogiaynintho");
+            var sogiayngungtho = getValue("sogiayngungtho");
+            var tansohitvao = getValue("tansohitvao");
+            var tansothora = getValue("tansothora");
+            var tansonintho = getValue("tansonintho");
+            var tansongungtho = getValue("tansongungtho");
+            
+            tapthien = true;
+            sovong = 0;
+            while(tapthien)
+            {
+                //setValue("sovong",++sovong);
+                document.getElementById("sovong").innerHTML = `<strong>${++sovong}</strong>`;
+                playSound(tansohitvao,sogiayhitvao);
+                console.log('sleep',sogiayhitvao);
+                await sleep(sogiayhitvao);
+                playSound(tansonintho,sogiaynintho);
+                console.log('sleep',sogiaynintho);
+                await sleep(sogiaynintho);
+                playSound(tansothora,sogiaythora);
+                console.log('sleep',sogiaythora);
+                await sleep(sogiaythora);
+                playSound(tansongungtho,sogiayngungtho);
+                console.log('sleep',sogiayngungtho);
+                await sleep(sogiayngungtho);
+            }
+        }
+        function SaveProfile() {
+            if(window.localStorage) {
+                var newProfile = {
+                    "sogiayhitvao": getValue("sogiayhitvao"),
+                    "sogiaythora": getValue("sogiaythora"),
+                    "sogiaynintho": getValue("sogiaynintho"),
+                    "sogiayngungtho": getValue("sogiayngungtho"),
+                    "tansohitvao": getValue("tansohitvao"),
+                    "tansothora": getValue("tansothora"),
+                    "tansonintho": getValue("tansonintho"),
+                    "tansongungtho": getValue("tansongungtho"),
+                };
+                window.localStorage.setItem("recent",JSON.stringify(newProfile));
+                var profileName = prompt("Bạn muốn lưu tên cấu hình? Nhập: ");
+                if(profileName) {
+                    newProfile.name = profileName;
+                    savedProfile.push(newProfile)
+                    window.localStorage.setItem("all",JSON.stringify(savedProfile));
+                    LoadProfile();
+                }
+            }
+        }
+        function LoadProfile() {
+            if(!window.localStorage) return;
+            var strProfile = window.localStorage.getItem("recent");
+            if(strProfile) UseProfile(JSON.parse(strProfile));
+            strProfile = window.localStorage.getItem("all");
+            if(strProfile) savedProfile = JSON.parse(strProfile);
+            if(savedProfile && savedProfile.length>0) {
+                var html = '';
+                for(var i = 0; i<savedProfile.length; i++)
+                    html += `<li><a href="#" onclick="UseProfile(savedProfile[${i}])">${savedProfile[i].name}</a></li>`;
+                document.getElementById("profile").innerHTML=`<ul>${html}</ul>`;
+            }
+            else {
+                document.getElementById("profile").innerHTML=`<h3>Chưa có cấu hình nào</h3>`
+            }
+        }
+        function UseProfile(p) {
+            setValue("sogiayhitvao",p.sogiayhitvao);
+            setValue("sogiaythora",p.sogiaythora);
+            setValue("sogiaynintho",p.sogiaynintho);
+            setValue("sogiayngungtho",p.sogiayngungtho);
+            setValue("tansohitvao",p.tansohitvao);
+            setValue("tansothora",p.tansothora);
+            setValue("tansonintho",p.tansonintho);
+            setValue("tansongungtho",p.tansongungtho);
+        }
+        LoadProfile();
+    </script>
+</body>
+</html>
